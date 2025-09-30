@@ -7,12 +7,11 @@ const port = 3000;
 
 // Configurar el motor de vistas con express-handlebars
 app.engine('hbs', engine({
-    extname: 'hbs',                                      // Extensión de archivos
-    defaultLayout: 'layout',                             // Layout por defecto (sin .hbs)
-    layoutsDir: path.join(__dirname, 'views/layouts'),   // Directorio de layouts
-    partialsDir: path.join(__dirname, 'views/partials'), // Directorio de parciales
+    extname: 'hbs',
+    defaultLayout: 'layout',
+    layoutsDir: path.join(__dirname, 'views/layouts'),
+    partialsDir: path.join(__dirname, 'views/partials'),
     helpers: {
-        // Helper personalizado para el año actual
         getCurrentYear: function() {
             return new Date().getFullYear();
         }
@@ -22,44 +21,39 @@ app.engine('hbs', engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Servir contenido estático desde la carpeta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Datos dinámicos: Arreglo de proyectos
 const projects = [
-    { title: 'Proyecto 1', description: 'Descripción breve del proyecto 1.', details: 'Detalles completos: Tecnologías usadas, desafíos, etc.' },
-    { title: 'Proyecto 2', description: 'Descripción breve del proyecto 2.', details: 'Detalles completos: Tecnologías usadas, desafíos, etc.' },
-    { title: 'Proyecto 3', description: 'Descripción breve del proyecto 3.', details: 'Detalles completos: Tecnologías usadas, desafíos, etc.' }
+    { title: 'Casa GA', description: 'Ampliación y remodelación de una casa en San Antonio.', details: 'Modifiqué una antigua casa de un piso para construir un espacio acogedor en dos pisos, con una imponente doble altura en el área principal.' },
+    { title: 'ASM2731', description: 'Remodelación de un departamento en Santiago.', details: 'Trabajo en progreso, en donde proyecté una envolvente aislada, ventanas de PVC con doble vidrio hermético, y un sistema de extracción/inyección de aire fresco con recuperación de calor.' },
+{ title: 'S.O.S. Pets', description: 'Diseño UX/UI.', details: 'Junto a mi equipo disenamos la interfaz de una aplicación para adoptar mascotas, usando técnicas de investigación UX y herramientas de diseño UI como Figma.' }
 ];
 
-// Ruta principal: Home
 app.get('/', (req, res) => {
     res.render('home', {
-        name: 'Tu Nombre',
-        description: 'Una breve descripción personal.',
+        name: 'Jorge Garrido',
+        description: 'Diseñador UX/UI, Diseñador arquitectónico.',
         projects: projects
     });
 });
 
-// Ruta: About
 app.get('/about', (req, res) => {
     res.render('about', {
-        history: 'Mi historia personal: Nacimiento, educación, intereses, etc.'
+        title: 'Sobre mí',
+        history: 'Migrante del diseño físico al diseño digital, comenzando por el diseño UX/UI y continuando con el desarrollo Full Stack.'
     });
 });
 
-// Ruta: Projects
 app.get('/projects', (req, res) => {
     res.render('projects', {
         projects: projects
     });
 });
 
-// Manejo de errores 404
 app.use((req, res, next) => {
     res.status(404).render('404', { 
         url: req.originalUrl,
-        layout: false // Opcional: puedes usar un layout diferente o ninguno para errores
+        layout: false
     });
 });
 
